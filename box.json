@@ -1,0 +1,12 @@
+{
+	"main": "src/Application.php",
+	"output": "container.phar",
+	"directories": [
+		"src"
+	],
+	"files": [
+		"composer.json",
+		"composer-lock",
+		".gitignore"
+	]
+}

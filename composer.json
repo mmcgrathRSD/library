@@ -1,0 +1,48 @@
+{
+	"name": "mmcgrathrsd/container",
+	"description": "We be doing it bois",
+	"type": "library",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Mike McGrath",
+			"email": "mike.mcgrath@rallysportdirect.com"
+		}
+	],
+	"require": {
+		"illuminate/view": "*",
+		"illuminate/config": "*",
+		"illuminate/database": "*",
+		"illuminate/pagination": "*",
+		"illuminate/console": "*",
+		"illuminate/http": "*",
+		"illuminate/support": "*",
+		"illuminate/cache": "*",
+		"illuminate/contracts": "*"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "*",
+		"mockery/mockery": "*",
+		"php-coveralls/php-coveralls": "*",
+		"fzaninotto/faker": "*",
+		"vlucas/phpdotenv": "*",
+		"nunomaduro/collision": "^5.0",
+		"pestphp/pest": "^0.3.10"
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Rally\\Container\\Tests\\": "tests/"
+		},
+		"files": [
+			"tests/bootstrap.php"
+		]
+	},
+	"autoload": {
+		"psr-4": {
+			"Rally\\Container\\": "src/"
+		},
+		"files": [
+			"src/helpers.php"
+		]
+	}
+}
