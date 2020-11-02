@@ -9,7 +9,7 @@ use Illuminate\Contracts\Console\Kernel as KernelContract;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Http\Request;
 use Rally\Container\Application;
-use Laravel\Lumen\Exceptions\Handler;
+use Handler;
 use RuntimeException;
 use Throwable;
 
