@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Lumen\Concerns;
+namespace Rally\Container\Concerns;
 
 use ErrorException;
 use Illuminate\Contracts\Debug\ExceptionHandler;

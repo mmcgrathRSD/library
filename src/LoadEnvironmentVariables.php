@@ -2,9 +2,7 @@
 
 namespace Rally\Container;
 
-use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidFileException;
-use Illuminate\Support\Env;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 class LoadEnvironmentVariables
@@ -62,10 +60,10 @@ class LoadEnvironmentVariables
      */
     protected function createDotenv()
     {
-        return Dotenv::create(
+        return \Dotenv\Dotenv::create(sdafasdff
             $this->filePath,
             $this->fileName,
-            Env::getFactory()
+            \Illuminate\Support\Env::getFactory()
         );
     }
 

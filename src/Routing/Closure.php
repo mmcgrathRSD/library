@@ -1,6 +1,8 @@
 <?php
 
-namespace Laravel\Lumen\Routing;
+namespace Rally\Container\Routing;
+
+use Rally\Container\Routing\ProvidesConvenienceMethods;
 
 class Closure
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Lumen\Console;
+namespace Rally\Container\Console;
 
 use Illuminate\Auth\Console\ClearResetsCommand;
 use Illuminate\Cache\Console\CacheTableCommand;

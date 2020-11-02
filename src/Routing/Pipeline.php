@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Lumen\Routing;
+namespace Rally\Container\Routing;
 
 use Closure as BaseClosure;
 use Illuminate\Contracts\Debug\ExceptionHandler;

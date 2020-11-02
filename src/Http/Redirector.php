@@ -1,9 +1,9 @@
 <?php
 
-namespace Laravel\Lumen\Http;
+namespace Rally\Container\Http;
 
 use Illuminate\Http\RedirectResponse;
-use Laravel\Lumen\Application;
+use Rally\Container\Application;
 
 class Redirector
 {

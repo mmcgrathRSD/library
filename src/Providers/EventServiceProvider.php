@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Lumen\Providers;
+namespace Rally\Container\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Lumen\Concerns;
+namespace Rally\Container\Concerns;
 
 use Closure;
 use FastRoute\Dispatcher;
