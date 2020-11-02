@@ -1,4 +1,4 @@
-# Laravel Cottainer
+# Laravel Container
 
 Ok I did start just taking a crack at this here and there of the past few weeks, and and only becuase i finally had an idea about how we can do incremneal adoption.
 
@@ -36,3 +36,6 @@ So basically there is this thing thats kind of half due to laravel, and half due
 ```
 
 When this came to me, ist was like a light bulb going off. For laravel packages, just including a service provider in the "extra" feild, alllow them to tap int your code during a special point in the composer installation process, and do the exacty type of boot strapping we would neeed. (providing assets, defining routes and controllers, etc); So this is totally something that would work.
+
+
+So basically instead of every package providing thier stuff ina a boostrap, listenener and routes feile, it would simply be a Service provider per package, and the whole thing would only happen one during intial instsallation of the packages. It honestly might work. We'lll still have plenttttyy of other hurdles tho
