@@ -36,3 +36,5 @@ So basically, each app would have something like this in there composer.json fil
 And so basically what composer lets you do is run custom install scripts based on whatever is in thoose "extra" feilds, when when we did the main install in the main repo we'd be boostrapping all the serices based on the service provider definition they provide. Which is also cool becuase most of it can be cached into an array like strucute and not have to run on every request. 
 
 We would also have ALOT of stuff to polyfill in the meantime, becuase all the old stuff would have to work, for a while atleast. 
+
+

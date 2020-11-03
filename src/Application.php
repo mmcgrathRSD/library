@@ -2,51 +2,12 @@
 
 namespace Rally\Container;
 
-use Illuminate\Auth\AuthManager;
-use Illuminate\Auth\AuthServiceProvider;
-use Illuminate\Broadcasting\BroadcastServiceProvider;
-use Illuminate\Bus\BusServiceProvider;
-use Illuminate\Cache\CacheServiceProvider;
-use Illuminate\Config\Repository as ConfigRepository;
-use Illuminate\Container\Container;
-use Illuminate\Contracts\Auth\Access\Gate;
-use Illuminate\Contracts\Broadcasting\Broadcaster;
-use Illuminate\Contracts\Broadcasting\Factory;
-use Illuminate\Contracts\Bus\Dispatcher;
-use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Database\DatabaseServiceProvider;
-use Illuminate\Database\MigrationServiceProvider;
-use Illuminate\Encryption\EncryptionServiceProvider;
-use Illuminate\Events\EventServiceProvider;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Filesystem\FilesystemServiceProvider;
-use Illuminate\Hashing\HashServiceProvider;
-use Illuminate\Http\Request;
-use Illuminate\Log\LogManager;
-use Illuminate\Pagination\PaginationServiceProvider;
-use Illuminate\Queue\QueueServiceProvider;
-use Illuminate\Support\Composer;
-use Illuminate\Support\Facades\Facade;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
-use Illuminate\Translation\TranslationServiceProvider;
-use Illuminate\Validation\ValidationServiceProvider;
-use Illuminate\View\ViewServiceProvider;
-use Laravel\Lumen\Console\ConsoleServiceProvider;
-use Laravel\Lumen\Routing\Router;
-use Nyholm\Psr7\Factory\Psr17Factory;
-use Nyholm\Psr7\Response as PsrResponse;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerInterface;
-use RuntimeException;
-use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+use Rally\Container\Routing\Router;
 
-class Application extends Container
-{
-    use Concerns\RoutesRequests,
-        Concerns\RegistersExceptionHandlers;
+class Application extends \Laravel\Lumen\Application {
+    
+    use \Laravel\Lumen\Concerns\RoutesRequests,
+        \Laravel\Lumen\Concerns\RegistersExceptionHandlers;
 
     /**
      * Indicates if the class aliases have been registered.
@@ -156,26 +117,6 @@ class Application extends Container
     }
 
     /**
-     * Get the version number of the application.
-     *
-     * @return string
-     */
-    public function version()
-    {
-        return 'Lumen (8.0.1) (Laravel Components ^8.0)';
-    }
-
-    /**
-     * Determine if the application is currently down for maintenance.
-     *
-     * @return bool
-     */
-    public function isDownForMaintenance()
-    {
-        return false;
-    }
-
-    /**
      * Get or check the current application environment.
      *
      * @param  mixed
@@ -189,7 +130,7 @@ class Application extends Container
             $patterns = is_array(func_get_arg(0)) ? func_get_arg(0) : func_get_args();
 
             foreach ($patterns as $pattern) {
-                if (Str::is($pattern, $env)) {
+                if (\Illuminate\Support\Str::is($pattern, $env)) {
                     return true;
                 }
             }
@@ -219,7 +160,7 @@ class Application extends Container
      */
     public function register($provider)
     {
-        if (! $provider instanceof ServiceProvider) {
+        if (! $provider instanceof \Illuminate\Support\ServiceProvider) {
             $provider = new $provider($this);
         }
 
@@ -271,7 +212,7 @@ class Application extends Container
      * @param  \Illuminate\Support\ServiceProvider  $provider
      * @return mixed
      */
-    protected function bootProvider(ServiceProvider $provider)
+    protected function bootProvider(\Illuminate\Support\ServiceProvider $provider)
     {
         if (method_exists($provider, 'boot')) {
             return $this->call([$provider, 'boot']);
@@ -300,74 +241,6 @@ class Application extends Container
         return parent::make($abstract, $parameters);
     }
 
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerAuthBindings()
-    {
-        $this->singleton('auth', function () {
-            return $this->loadComponent('auth', AuthServiceProvider::class, 'auth');
-        });
-
-        $this->singleton('auth.driver', function () {
-            return $this->loadComponent('auth', AuthServiceProvider::class, 'auth.driver');
-        });
-
-        $this->singleton(AuthManager::class, function () {
-            return $this->loadComponent('auth', AuthServiceProvider::class, 'auth');
-        });
-
-        $this->singleton(Gate::class, function () {
-            return $this->loadComponent('auth', AuthServiceProvider::class, Gate::class);
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerBroadcastingBindings()
-    {
-        $this->singleton(Factory::class, function () {
-            return $this->loadComponent('broadcasting', BroadcastServiceProvider::class, Factory::class);
-        });
-
-        $this->singleton(Broadcaster::class, function () {
-            return $this->loadComponent('broadcasting', BroadcastServiceProvider::class, Broadcaster::class);
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerBusBindings()
-    {
-        $this->singleton(Dispatcher::class, function () {
-            $this->register(BusServiceProvider::class);
-
-            return $this->make(Dispatcher::class);
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerCacheBindings()
-    {
-        $this->singleton('cache', function () {
-            return $this->loadComponent('cache', CacheServiceProvider::class);
-        });
-        $this->singleton('cache.store', function () {
-            return $this->loadComponent('cache', CacheServiceProvider::class, 'cache.store');
-        });
-    }
 
     /**
      * Register container bindings for the application.
@@ -377,7 +250,7 @@ class Application extends Container
     protected function registerComposerBindings()
     {
         $this->singleton('composer', function ($app) {
-            return new Composer($app->make('files'), $this->basePath());
+            return new \Illuminate\Support\Composer($app->make('files'), $this->basePath());
         });
     }
 
@@ -389,7 +262,7 @@ class Application extends Container
     protected function registerConfigBindings()
     {
         $this->singleton('config', function () {
-            return new ConfigRepository;
+            return new \Illuminate\Config\Repository();
         });
     }
 
@@ -489,27 +362,9 @@ class Application extends Container
      */
     protected function registerLogBindings()
     {
-        $this->singleton(LoggerInterface::class, function () {
-            $this->configure('logging');
-
-            return new LogManager($this);
-        });
+        parent::registerLogBindings();
     }
 
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerQueueBindings()
-    {
-        $this->singleton('queue', function () {
-            return $this->loadComponent('queue', QueueServiceProvider::class, 'queue');
-        });
-        $this->singleton('queue.connection', function () {
-            return $this->loadComponent('queue', QueueServiceProvider::class, 'queue.connection');
-        });
-    }
 
     /**
      * Register container bindings for the application.
@@ -529,19 +384,9 @@ class Application extends Container
      * @param  \Symfony\Component\HttpFoundation\Request $request
      * @return \Illuminate\Http\Request
      */
-    protected function prepareRequest(SymfonyRequest $request)
+    protected function prepareRequest(\Symfony\Component\HttpFoundation\Request $request)
     {
-        if (! $request instanceof Request) {
-            $request = Request::createFromBase($request);
-        }
-
-        $request->setUserResolver(function ($guard = null) {
-            return $this->make('auth')->guard($guard)->user();
-        })->setRouteResolver(function () {
-            return $this->currentRoute;
-        });
-
-        return $request;
+        parent::prepareRequest($request);
     }
 
     /**
@@ -551,16 +396,7 @@ class Application extends Container
      */
     protected function registerPsrRequestBindings()
     {
-        $this->singleton(ServerRequestInterface::class, function ($app) {
-            if (class_exists(Psr17Factory::class) && class_exists(PsrHttpFactory::class)) {
-                $psr17Factory = new Psr17Factory;
-
-                return (new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory))
-                    ->createRequest($app->make('request'));
-            }
-
-            throw new BindingResolutionException('Unable to resolve PSR request. Please install symfony/psr-http-message-bridge and nyholm/psr7.');
-        });
+       parent::registerPsrRequestBindings();
     }
 
     /**
@@ -570,47 +406,10 @@ class Application extends Container
      */
     protected function registerPsrResponseBindings()
     {
-        $this->singleton(ResponseInterface::class, function () {
-            if (class_exists(PsrResponse::class)) {
-                return new PsrResponse;
-            }
-
-            throw new BindingResolutionException('Unable to resolve PSR response. Please install nyholm/psr7.');
-        });
+        parent::registerPsrResponseBindings();
     }
 
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerTranslationBindings()
-    {
-        $this->singleton('translator', function () {
-            $this->configure('app');
-
-            $this->instance('path.lang', $this->getLanguagePath());
-
-            $this->register(TranslationServiceProvider::class);
-
-            return $this->make('translator');
-        });
-    }
-
-    /**
-     * Get the path to the application's language files.
-     *
-     * @return string
-     */
-    protected function getLanguagePath()
-    {
-        if (is_dir($langPath = $this->basePath().'/resources/lang')) {
-            return $langPath;
-        } else {
-            return __DIR__.'/../resources/lang';
-        }
-    }
-
+   
     /**
      * Register container bindings for the application.
      *
@@ -619,7 +418,7 @@ class Application extends Container
     protected function registerUrlGeneratorBindings()
     {
         $this->singleton('url', function () {
-            return new Routing\UrlGenerator($this);
+            return new \Laravel\Lumen\Routing\UrlGenerator($this);
         });
     }
 
@@ -644,9 +443,7 @@ class Application extends Container
      */
     protected function registerViewBindings()
     {
-        $this->singleton('view', function () {
-            return $this->loadComponent('view', ViewServiceProvider::class);
-        });
+        parent::registerViewBindings();
     }
 
     /**
@@ -727,7 +524,7 @@ class Application extends Container
      */
     public function withFacades($aliases = true, $userAliases = [])
     {
-        Facade::setFacadeApplication($this);
+        \Illuminate\Support\Facades\Facade::setFacadeApplication($this);
 
         if ($aliases) {
             $this->withAliases($userAliases);
@@ -743,13 +540,7 @@ class Application extends Container
     public function withAliases($userAliases = [])
     {
         $defaults = [
-            \Illuminate\Support\Facades\Auth::class => 'Auth',
-            \Illuminate\Support\Facades\Cache::class => 'Cache',
             \Illuminate\Support\Facades\DB::class => 'DB',
-            \Illuminate\Support\Facades\Event::class => 'Event',
-            \Illuminate\Support\Facades\Gate::class => 'Gate',
-            \Illuminate\Support\Facades\Log::class => 'Log',
-            \Illuminate\Support\Facades\Queue::class => 'Queue',
             \Illuminate\Support\Facades\Route::class => 'Route',
             \Illuminate\Support\Facades\Schema::class => 'Schema',
             \Illuminate\Support\Facades\Storage::class => 'Storage',
@@ -908,8 +699,8 @@ class Application extends Container
     {
         $this->withFacades($aliases);
 
-        $this->make('cache');
-        $this->make('queue');
+        // $this->make('cache');
+        // $this->make('queue');
 
         $this->configure('database');
 
@@ -940,7 +731,7 @@ class Application extends Container
             }
         }
 
-        throw new RuntimeException('Unable to detect application namespace.');
+        throw new \RuntimeException('Unable to detect application namespace.');
     }
 
     /**
@@ -986,8 +777,7 @@ class Application extends Container
      */
     public function setLocale($locale)
     {
-        $this['config']->set('app.locale', $locale);
-        $this['translator']->setLocale($locale);
+       parent::setLocale($locale);
     }
 
     /**
@@ -1010,28 +800,11 @@ class Application extends Container
     {
         $this->aliases = [
             \Illuminate\Contracts\Foundation\Application::class => 'app',
-            \Illuminate\Contracts\Auth\Factory::class => 'auth',
-            \Illuminate\Contracts\Auth\Guard::class => 'auth.driver',
-            \Illuminate\Contracts\Cache\Factory::class => 'cache',
-            \Illuminate\Contracts\Cache\Repository::class => 'cache.store',
-            \Illuminate\Contracts\Config\Repository::class => 'config',
             \Illuminate\Container\Container::class => 'app',
             \Illuminate\Contracts\Container\Container::class => 'app',
             \Illuminate\Database\ConnectionResolverInterface::class => 'db',
             \Illuminate\Database\DatabaseManager::class => 'db',
-            \Illuminate\Contracts\Encryption\Encrypter::class => 'encrypter',
-            \Illuminate\Contracts\Events\Dispatcher::class => 'events',
-            \Illuminate\Contracts\Filesystem\Factory::class => 'filesystem',
-            \Illuminate\Contracts\Filesystem\Filesystem::class => 'filesystem.disk',
-            \Illuminate\Contracts\Filesystem\Cloud::class => 'filesystem.cloud',
-            \Illuminate\Contracts\Hashing\Hasher::class => 'hash',
             'log' => \Psr\Log\LoggerInterface::class,
-            \Illuminate\Contracts\Queue\Factory::class => 'queue',
-            \Illuminate\Contracts\Queue\Queue::class => 'queue.connection',
-            \Illuminate\Redis\RedisManager::class => 'redis',
-            \Illuminate\Contracts\Redis\Factory::class => 'redis',
-            \Illuminate\Redis\Connections\Connection::class => 'redis.connection',
-            \Illuminate\Contracts\Redis\Connection::class => 'redis.connection',
             'request' => \Illuminate\Http\Request::class,
             \Laravel\Lumen\Routing\Router::class => 'router',
             \Illuminate\Contracts\Translation\Translator::class => 'translator',
@@ -1047,18 +820,6 @@ class Application extends Container
      * @var array
      */
     public $availableBindings = [
-        'auth' => 'registerAuthBindings',
-        'auth.driver' => 'registerAuthBindings',
-        \Illuminate\Auth\AuthManager::class => 'registerAuthBindings',
-        \Illuminate\Contracts\Auth\Guard::class => 'registerAuthBindings',
-        \Illuminate\Contracts\Auth\Access\Gate::class => 'registerAuthBindings',
-        \Illuminate\Contracts\Broadcasting\Broadcaster::class => 'registerBroadcastingBindings',
-        \Illuminate\Contracts\Broadcasting\Factory::class => 'registerBroadcastingBindings',
-        \Illuminate\Contracts\Bus\Dispatcher::class => 'registerBusBindings',
-        'cache' => 'registerCacheBindings',
-        'cache.store' => 'registerCacheBindings',
-        \Illuminate\Contracts\Cache\Factory::class => 'registerCacheBindings',
-        \Illuminate\Contracts\Cache\Repository::class => 'registerCacheBindings',
         'composer' => 'registerComposerBindings',
         'config' => 'registerConfigBindings',
         'db' => 'registerDatabaseBindings',
@@ -1069,27 +830,12 @@ class Application extends Container
         \Illuminate\Contracts\Filesystem\Cloud::class => 'registerFilesystemBindings',
         \Illuminate\Contracts\Filesystem\Filesystem::class => 'registerFilesystemBindings',
         \Illuminate\Contracts\Filesystem\Factory::class => 'registerFilesystemBindings',
-        'encrypter' => 'registerEncrypterBindings',
-        \Illuminate\Contracts\Encryption\Encrypter::class => 'registerEncrypterBindings',
-        'events' => 'registerEventBindings',
-        \Illuminate\Contracts\Events\Dispatcher::class => 'registerEventBindings',
         'files' => 'registerFilesBindings',
-        'hash' => 'registerHashBindings',
-        \Illuminate\Contracts\Hashing\Hasher::class => 'registerHashBindings',
         'log' => 'registerLogBindings',
         \Psr\Log\LoggerInterface::class => 'registerLogBindings',
-        'queue' => 'registerQueueBindings',
-        'queue.connection' => 'registerQueueBindings',
-        \Illuminate\Contracts\Queue\Factory::class => 'registerQueueBindings',
-        \Illuminate\Contracts\Queue\Queue::class => 'registerQueueBindings',
         'router' => 'registerRouterBindings',
         \Psr\Http\Message\ServerRequestInterface::class => 'registerPsrRequestBindings',
         \Psr\Http\Message\ResponseInterface::class => 'registerPsrResponseBindings',
-        'translator' => 'registerTranslationBindings',
         'url' => 'registerUrlGeneratorBindings',
-        'validator' => 'registerValidatorBindings',
-        \Illuminate\Contracts\Validation\Factory::class => 'registerValidatorBindings',
-        'view' => 'registerViewBindings',
-        \Illuminate\Contracts\View\Factory::class => 'registerViewBindings',
     ];
 }
