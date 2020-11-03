@@ -2,9 +2,7 @@
 
 namespace Rally\Container\Bootstrap;
 
-use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidFileException;
-use Illuminate\Support\Env;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 class LoadsEnvirontmentVariables
@@ -62,8 +60,8 @@ class LoadsEnvirontmentVariables
      */
     protected function createDotenv()
     {
-        return Dotenv::create(
-            Env::getRepository(),
+        return \Dotenv\Dotenv::create(
+            \Illuminate\Support\Env::getRepository(),
             $this->filePath,
             $this->fileName
         );
