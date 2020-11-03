@@ -19,7 +19,8 @@
 		"php-coveralls/php-coveralls": "*",
 		"fzaninotto/faker": "*",
 		"nunomaduro/collision": "^5.0",
-		"pestphp/pest": "^0.3.10"
+		"pestphp/pest": "^0.3.10",
+		"symfony/psr-http-message-bridge": "^2.0"
 	},
 	"autoload": {
 		"psr-4": {

@@ -3,11 +3,15 @@
 namespace Rally\Container;
 
 use Rally\Container\Routing\Router;
+use Rally\Container\Concerns\RoutesRequests;
+use Laravel\Lumen\Application as BaseApplication;
+use Rally\Container\Concerns\RegistersExceptionHandlers;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Filesystem\FilesystemServiceProvider;
 
-class Application extends \Laravel\Lumen\Application {
+class Application extends BaseApplication {
     
-    use \Laravel\Lumen\Concerns\RoutesRequests,
-        \Laravel\Lumen\Concerns\RegistersExceptionHandlers;
+    use RoutesRequests, RegistersExceptionHandlers;
 
     /**
      * Indicates if the class aliases have been registered.
@@ -83,7 +87,6 @@ class Application extends \Laravel\Lumen\Application {
         $this->basePath = $basePath;
 
         $this->bootstrapContainer();
-        $this->registerErrorHandling();
         $this->bootstrapRouter();
     }
 
@@ -285,31 +288,6 @@ class Application extends \Laravel\Lumen\Application {
         });
     }
 
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerEncrypterBindings()
-    {
-        $this->singleton('encrypter', function () {
-            return $this->loadComponent('app', EncryptionServiceProvider::class, 'encrypter');
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerEventBindings()
-    {
-        $this->singleton('events', function () {
-            $this->register(EventServiceProvider::class);
-
-            return $this->make('events');
-        });
-    }
 
     /**
      * Register container bindings for the application.
