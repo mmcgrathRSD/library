@@ -410,7 +410,7 @@
                 </svg>
                 <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
                     <div class="d-flex justify-content-between align-items-center w-100">
-                        <strong class="text-gray-dark">POST - https://eventapi.rallysportdirect.com/api/event</strong>
+                        <strong class="text-gray-dark">POST - https://fbbm98mpvb.execute-api.us-east-1.amazonaws.com/dev</strong>
                         <a href="#"></a>
                     </div>
                     <span class="d-block">Send JSON Structured in any way you like</span>
@@ -426,7 +426,7 @@
 
         <div class="my-3 p-3 bg-white rounded shadow-sm">
             <h6 class="border-bottom border-gray pb-2 mb-0">10 Most Recent Requets</h6>
-            
+
             @foreach($files as $file)
             <div class="media text-muted pt-3">
                 <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32">
@@ -452,10 +452,10 @@
                 <a href="#"></a>
             </small>
         </div>
-    
+
     </main>
-    
-    
+
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 </body>
