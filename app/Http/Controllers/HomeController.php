@@ -26,6 +26,6 @@ class HomeController extends Controller
 
         $results = new \Illuminate\Pagination\LengthAwarePaginator($files->all(), $files->count(), 10);
 
-        return view('welcome')->with('files', $files);
+        return view('welcome')->with('files', $results);
     }
 }
