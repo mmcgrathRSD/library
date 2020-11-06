@@ -1,0 +1,12 @@
+runtime: php73
+
+env_variables:
+  ## Put production environment variables here.
+  APP_KEY: base64:PTPU+7j/5pyBGhnQqNNcgQ==
+  APP_STORAGE: /tmp
+  VIEW_COMPILED_PATH: /tmp
+  SESSION_DRIVER: cookie
+  AWS_ACCESS_KEY_ID: AKIA4UVRYN23UZ2WFE4F
+  AWS_SECRET_ACCESS_KEY: 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
+  AWS_DEFAULT_REGION: us-west-2
+  AWS_BUCKET: event-api-demo

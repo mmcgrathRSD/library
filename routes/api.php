@@ -18,7 +18,7 @@ use App\Http\Controllers\NetsuiteEventController;
 Route::middleware('logrequest')->match(array('GET','POST'),'event', [NetsuiteEventController::class, 'index']);
 
 Route::middleware('logrequest')->get('test', function(){
-    $f = Storage::disk('s3')->files('requests', 'ok');
+    $f = Storage::disk('s3')->files('appengine', 'ok');
 
     $t = Storage::disk('s3')->get($f[0]);
 
